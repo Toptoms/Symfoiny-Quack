@@ -1,17 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Quack index{% endblock %}
+{% block title %}Quack{% endblock %}
 
 {% block body %}
-    <h1>Quack index</h1>
+    <h1>Quack </h1>
 
     <table class="table">
+
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Content</th>
                 <th>Created_at</th>
+                <th>Author</th>
+                {% if is_granted('ROLE_USER') %}
                 <th>actions</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -20,10 +24,13 @@
                 <td>{{ quack.id }}</td>
                 <td>{{ quack.content }}</td>
                 <td>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ quack.author.username }}</td>
+                {% if is_granted('quack_edit', quack) %}
                 <td>
-                    <a href="{{ path('quack_show', {'id': quack.id}) }}">show</a>
-                    <a href="{{ path('quack_edit', {'id': quack.id}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('quack_show', {'id': quack.id}) }}">show</a>
+                    <a class="btn btn-primary" href="{{ path('quack_edit', {'id': quack.id}) }}">edit</a>
                 </td>
+                {% endif %}
             </tr>
         {% else %}
             <tr>

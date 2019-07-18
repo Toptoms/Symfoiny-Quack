@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\QuackRepository")
@@ -25,6 +26,14 @@ class Quack
      * @ORM\Column(type="datetime")
      */
     private $created_at;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="quacks")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
+
 
     public function getId(): ?int
     {
@@ -54,4 +63,17 @@ class Quack
 
         return $this;
     }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
 }
