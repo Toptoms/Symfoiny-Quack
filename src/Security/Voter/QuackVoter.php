@@ -28,14 +28,14 @@ class QuackVoter extends Voter
         switch ($attribute) {
             case 'quack_edit':
 
-                //dd($user->getId()==$subject->getAuthor()->getId());
+                //dd(in_array($user->getId(),$subject->getAuthor()->getId()));
                 return in_array('ROLE_ADMIN', $user->getRoles()) || $user->getId()==$subject->getAuthor()->getId();
                 break;
-            case 'quack_show':
+            /*case 'quack_show':
                 // logic to determine if the user can VIEW
                 // return true or false
                 return  in_array('ROLE_ADMIN', $user->getRoles()) ||$user->getId()==$subject->getAuthor()->getId();
-                break;
+                break;*/
         }
 
         return false;

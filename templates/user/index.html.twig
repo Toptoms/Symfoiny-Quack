@@ -10,8 +10,10 @@
             <tr>
                 <th>Id</th>
                 <th>Username</th>
+                {% if is_granted('ROLE_ADMIN') %}
                 <th>Roles</th>
                 <th>Password</th>
+                {% endif %}
                 <th>Email</th>
                 <th>Firstname</th>
                 <th>Lastname</th>
@@ -23,15 +25,19 @@
             <tr>
                 <td>{{ user.id }}</td>
                 <td>{{ user.username }}</td>
+                {% if is_granted('ROLE_ADMIN') %}
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
                 <td>{{ user.password }}</td>
+                {% endif %}
                 <td>{{ user.email }}</td>
                 <td>{{ user.firstname }}</td>
                 <td>{{ user.lastname }}</td>
+                {% if is_granted('user_edit', user) %}
                 <td>
                     <a href="{{ path('user_show', {'id': user.id}) }}">show</a>
                     <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
                 </td>
+                {% endif %}
             </tr>
         {% else %}
             <tr>

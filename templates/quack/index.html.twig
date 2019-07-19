@@ -25,9 +25,10 @@
                 <td>{{ quack.content }}</td>
                 <td>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ quack.author.username }}</td>
-                {% if is_granted('quack_edit', quack) %}
+
                 <td>
                     <a class="btn btn-primary" href="{{ path('quack_show', {'id': quack.id}) }}">show</a>
+                    {% if is_granted('quack_edit', quack) %}
                     <a class="btn btn-primary" href="{{ path('quack_edit', {'id': quack.id}) }}">edit</a>
                 </td>
                 {% endif %}
