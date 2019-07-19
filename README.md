@@ -27,15 +27,13 @@ Ouvrez votre navigateur et accédez à http://localhost:8000/. Si tout fonctionn
 Mettez en place la base de donnée:
 
 Adaptez le fichier d'environment .env avec le compte et le mot de passe correspondant, et le nom de la basé de donnée voulu .
-exemle:[
+exemle:
 # .env (or override DATABASE_URL in .env.local to avoid committing your changes)
 
 # customize this line!
 DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/db_name"
 
-# to use sqlite:
-# DATABASE_URL="sqlite:///%kernel.project_dir%/var/app.db"
-]
+
 
 1)Tout d'abord, installez le support Doctrine via le pack ORM, ainsi que le MakerBundle, qui vous aidera à générer du code:
 
