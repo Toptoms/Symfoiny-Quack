@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Quack;
 use App\Form\QuackType;
 use App\Repository\QuackRepository;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -25,15 +26,17 @@ class QuackController extends AbstractController
     {
 
         return $this->render('quack/index.html.twig', [
-            'quacks' => $quackRepository->findAll(),
+            'quacks' => $quackRepository->findBy( ['parent' => null]),
+
         ]);
 
     }
 
     /**
      * @Route("/new", name="quack_new", methods={"GET","POST"})
+     * @Route("/{parent}/comment/new", name="quack_new_comment", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, FileUploader $fileUploader, ?Quack $parent): Response
     {
         $quack = new Quack();
         $form = $this->createForm(QuackType::class, $quack);
@@ -42,29 +45,17 @@ class QuackController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $quack->setAuthor($this->getUser());
-            $picture = $form['pic']->getData();
 
-            // this condition is needed because the 'brochure' field is not required
-            // so the PDF file must be processed only when a file is uploaded
-            if ($picture) {
-                $originalFilename = pathinfo($picture->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$picture->guessExtension();
-
-                // Move the file to the directory where brochures are stored
-                try {
-                    $picture->move(
-                        $this->getParameter('pictures_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
+            if($parent){
+                $quack->setParent($parent);
+                $form->remove("pic")->remove("tags");
+            }else{
+                /** @var UploadedFile $pictureFile */
+                $pictureFile = $form['pic']->getData();
+                if ($pictureFile) {
+                    $pictureFileName = $fileUploader->upload($pictureFile);
+                    $quack->setPic('/uploads/'.$pictureFileName);
                 }
-
-                // updates the 'brochureFilename' property to store the PDF file name
-                // instead of its contents
-                $quack->setPic($newFilename);
             }
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -96,7 +87,7 @@ class QuackController extends AbstractController
     /**
      * @Route("/{id}/edit", name="quack_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Quack $quack): Response
+    public function edit(Request $request, Quack $quack, FileUploader $fileUploader): Response
     {
         $this->denyAccessUnlessGranted('quack_edit', $quack);
 
@@ -104,6 +95,13 @@ class QuackController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var UploadedFile $pictureFile */
+            $pictureFile = $form['pic']->getData();
+            if ($pictureFile) {
+                $pictureFileName = $fileUploader->upload($pictureFile);
+                $quack->setPic('/uploads/' . $pictureFileName);
+            }
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('quack_index');

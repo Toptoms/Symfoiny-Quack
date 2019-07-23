@@ -3,27 +3,83 @@
 {% block title %}Quack{% endblock %}
 
 {% block body %}
+
+
     <h1>Quack</h1>
 
 
-    <table class="table">
+    <table class="table table-bordered table-dark">
+
+        <thead>
+        <tr>
+
+            <th>Sharing</th>
+            <th>Content</th>
+            <th>tags</th>
+            <th>Created_at</th>
+            <th>Author</th>
+
+            {% if is_granted('ROLE_USER') %}
+                <th>actions</th>
+            {% endif %}
+        </tr>
+        </thead>
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ quack.id }}</td>
-            </tr>
-            <tr>
-                <th>Content</th>
-                <td>{{ quack.content }}</td>
-            </tr>
-            <tr>
-                <th>Created_at</th>
-                <td>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
+
+
+        <tr>
+
+            <td><img style="width: 60px" src=" {{ quack.pic }}"></td>
+            <td>{{ quack.content }}</td>
+            <td>{{ quack.tags }}</td>
+
+            <td>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            <td><img style="width: 35px" src="{{ quack.author.pic }}"> {{ quack.author.username }}</td>
+
+            <td>
+                <a class="btn btn-primary" href="{{ path('quack_show', {'id': quack.id}) }}">show</a>
+                {% if is_granted('quack_edit', quack) %}
+                <a class="btn btn-primary" href="{{ path('quack_edit', {'id': quack.id}) }}">edit</a>
+            </td>
+            {% endif %}
+        </tr>
         </tbody>
     </table>
 
-    
+    <table class="table">
+
+
+        <thead>
+        <tr>
+            <th>Author</th>
+            <th>Comment</th>
+            <th>Created_at</th>
+            {% if is_granted('ROLE_USER') %}
+                <th>actions</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for quack in quack.children %}
+            <tr>
+                <td><img style="width: 35px" src="{{ quack.author.pic }}"> {{ quack.author.username }}</td>
+                <td>{{ quack.content }}</td>
+                <td>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+
+                    {% if is_granted('quack_edit', quack) %}
+                    <a class="btn btn-primary" href="{{ path('quack_edit', {'id': quack.id}) }}">edit</a>
+                </td>
+                {% endif %}
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="text-center"> <a class="btn btn-primary  " href="{{ path('quack_new_comment', {'parent': quack.id}) }}">comment</a></div>
 
 
 

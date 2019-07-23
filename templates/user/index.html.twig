@@ -8,30 +8,34 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Username</th>
                 {% if is_granted('ROLE_ADMIN') %}
-                <th>Roles</th>
-                <th>Password</th>
+                <th>Id</th>
                 {% endif %}
-                <th>Email</th>
+                <th>Picture</th>
+                <th>Username</th>
                 <th>Firstname</th>
                 <th>Lastname</th>
+                <th>Email</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th>Roles</th>
+                {% endif %}
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for user in users %}
             <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.username }}</td>
                 {% if is_granted('ROLE_ADMIN') %}
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.password }}</td>
+                <td>{{ user.id }}</td>
                 {% endif %}
-                <td>{{ user.email }}</td>
+                <td> <img  style="width: 60px"src="{{ user.pic }}"></td>
+                <td>{{ user.username }}</td>
                 <td>{{ user.firstname }}</td>
                 <td>{{ user.lastname }}</td>
+                <td>{{ user.email }}</td>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                {% endif %}
                 {% if is_granted('user_edit', user) %}
                 <td>
                     <a href="{{ path('user_show', {'id': user.id}) }}">show</a>

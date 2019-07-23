@@ -4,20 +4,22 @@ namespace App\Form;
 
 use App\Entity\Quack;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 
 class QuackType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('content')
+            ->add('content', TextareaType::class, [
+                'attr' => ['class' => 'tinymce'],])
             ->add('pic', FileType::class, [
                 'label' => 'Picture',
-
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
 
@@ -31,16 +33,15 @@ class QuackType extends AbstractType
                     new File([
                         'maxSize' => '1024k',
                         'mimeTypes' => [
-                            'application/pdf',
-                            'application/x-pdf',
+                            'image/jpeg',
+
                         ],
                         'mimeTypesMessage' => 'Please upload a valid jpg document',
                     ])
                 ],
             ])
-            ->add('tags')
 
-        ;
+            ->add('tags');
     }
 
     public function configureOptions(OptionsResolver $resolver)

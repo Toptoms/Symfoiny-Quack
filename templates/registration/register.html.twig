@@ -3,19 +3,19 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-<div class="container">
-    <h1>Register</h1>
+    <div class="container">
+        <h1>Register</h1>
 
-    {{ form_start(registrationForm) }}
-    {{ form_row(registrationForm.firstname) }}
+        {{ form_start(registrationForm) }}
+        {{ form_row(registrationForm.firstname) }}
         {{ form_row(registrationForm.lastname) }}
         {{ form_row(registrationForm.username) }}
-          {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.email) }}
 
         {{ form_row(registrationForm.Password) }}
         {{ form_row(registrationForm.agreeTerms) }}
 
         <button class="btn btn-lg btn-primary">Register</button>
-    {{ form_end(registrationForm) }}
-</div>
+        {{ form_end(registrationForm) }}
+    </div>
 {% endblock %}

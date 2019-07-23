@@ -3,8 +3,11 @@
 {% block title %}New Quack{% endblock %}
 
 {% block body %}
-    <h1>Create new Quack</h1>
-
+    {% if (quack.parent) %}
+        <h1>Create new Comment</h1>
+    {% else %}
+        <h1>Create new Quack</h1>
+    {% endif %}
     {{ include('quack/_form.html.twig') }}
 
 

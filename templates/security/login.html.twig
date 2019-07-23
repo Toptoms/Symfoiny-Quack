@@ -3,6 +3,11 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
+    <div class="container">
+        <div class="text-center">
+    <h1>Quack Like</h1>
+        </div>
+    </div>
 <form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>

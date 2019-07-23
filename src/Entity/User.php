@@ -61,6 +61,11 @@ class User implements UserInterface
      */
     private $quacks;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $pic;
+
     public function __construct()
     {
         $this->quacks = new ArrayCollection();
@@ -127,7 +132,7 @@ class User implements UserInterface
      */
     public function getSalt()
     {
-        // not needed when using the "bcrypt" algorithm in security.yaml
+        // not needed when using the "auto" algorithm in security.yaml
     }
 
     /**
@@ -206,4 +211,17 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function getPic(): ?string
+    {
+        return $this->pic;
+    }
+
+    public function setPic(?string $pic): self
+    {
+        $this->pic = $pic;
+
+        return $this;
+    }
 }
+
