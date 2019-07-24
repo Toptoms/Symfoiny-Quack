@@ -7,6 +7,7 @@ use App\Entity\Quack;
 use App\Form\QuackType;
 use App\Repository\QuackRepository;
 use App\Service\FileUploader;
+use phpDocumentor\Reflection\Types\Parent_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -87,22 +88,30 @@ class QuackController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="quack_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit/content", name="quack_edit_comment", methods={"GET","POST"})
      */
     public function edit(Request $request, Quack $quack, FileUploader $fileUploader): Response
     {
+
         $this->denyAccessUnlessGranted('quack_edit', $quack);
 
         $form = $this->createForm(QuackType::class, $quack);
+
+        if ($quack->getParent()) {
+            $form->remove("pic");
+        }
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            /** @var UploadedFile $pictureFile */
-            $pictureFile = $form['pic']->getData();
-            if ($pictureFile) {
-                $pictureFileName = $fileUploader->upload($pictureFile);
-                $quack->setPic('/uploads/' . $pictureFileName);
-            }
+            if (!$quack->getParent()){
+                /** @var UploadedFile $pictureFile */
+                $pictureFile = $form['pic']->getData();
+                if ($pictureFile) {
+                    $pictureFileName = $fileUploader->upload($pictureFile);
+                    $quack->setPic('/uploads/' . $pictureFileName);
+                }}
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('quack_index');

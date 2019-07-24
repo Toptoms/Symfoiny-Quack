@@ -37,7 +37,7 @@
                 {% endif %}
                 <td><img style="width: 60px" src=" {{ quack.pic }}"></td>
                 <td>{{ quack.content }}</td>
-                <td>{{ quack.tags }}</td>
+                <td>{{ quack.tags|join(", ") }}</td>
                 <td>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td><img style="width: 35px" src="{{ quack.author.pic }}"> {{ quack.author.username }}</td>
                 <td>

@@ -30,7 +30,7 @@
             <td><img style="width: 35px" src="{{ quack.author.pic }}"> {{ quack.author.username }}</td>
             <td>{{ quack.content }}</td>
             <td><img style="width: 60px" src=" {{ quack.pic }}"></td>
-            <td>{{ quack.tags }}</td>
+            <td>{{ quack.tags|join(", ") }}</td>
             <td>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             <td>
                 {% if is_granted('quack_edit', quack) %}
@@ -48,6 +48,7 @@
         <tr class="table-primary">
             <th>Author</th>
             <th>Comment</th>
+            <th>tags</th>
             <th>Created_at</th>
             {% if is_granted('ROLE_USER') %}
                 <th>actions</th>
@@ -60,11 +61,11 @@
 
                 <td><img style="width: 35px" src="{{ quack.author.pic }}"> {{ quack.author.username }}</td>
                 <td>{{ quack.content }}</td>
+                <td>{{ quack.tags|join(", ") }}</td>
                 <td>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-
                     {% if is_granted('quack_edit', quack) %}
-                    <a class="btn btn-primary" href="{{ path('quack_edit', {'id': quack.id}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('quack_edit_comment', {'id': quack.id}) }}">edit</a>
                 </td>
                 {% endif %}
             </tr>

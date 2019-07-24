@@ -41,9 +41,9 @@ class Quack
     private $pic;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="json_array", nullable=true)
      */
-    private $tags;
+    private $tags = [];
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Quack", inversedBy="children")
@@ -114,12 +114,12 @@ class Quack
         return $this;
     }
 
-    public function getTags(): ?string
+    public function getTags(): ?array
     {
-        return $this->tags;
+        return $this->tags ?? [];
     }
 
-    public function setTags(?string $tags): self
+    public function setTags(?array $tags): self
     {
         $this->tags = $tags;
 
