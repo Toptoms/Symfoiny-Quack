@@ -1,4 +1,4 @@
-                                                       * Prject Quacke like *
+                                                     ** Prject Quacke like **
 
 ## Installer Symfony:
 
