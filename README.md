@@ -22,7 +22,7 @@ Ce serveur local prend en charge HTTP / 2, TLS / SSL, la génération automatiqu
 
 ***
 
-### Ouvrez votre terminal, accédez au nouveau répertoire de votre projet et démarrez le serveur Web local:
+#### Ouvrez votre terminal, accédez au nouveau répertoire de votre projet et démarrez le serveur Web local:
 
  cd my-project/
  -> composer install
@@ -31,7 +31,7 @@ Ouvrez votre navigateur et accédez à http://localhost:8000/. Si tout fonctionn
 
 ***
 
-### Mettez en place la base de donnée:
+#### Mettez en place la base de donnée:
 
 Adaptez le fichier d'environment .env avec le compte et le mot de passe correspondant, et le nom de la basé de donnée voulu .
 exemle: DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/db_name"
