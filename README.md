@@ -1,4 +1,4 @@
-#Installer Symfony:
+# Installer Symfony:
 
 Avant de créer votre première application Symfony, assurez-vous de répondre aux exigences suivantes:
 
@@ -8,7 +8,7 @@ Vous avez installé le serveur Web local Symfony (https://symfony.com/doc/curren
 
 ***
 
-#Lancer votre application Symfony:
+# Lancer votre application Symfony:
 
 En production, vous devez utiliser un serveur Web tel que Nginx ou Apache (reportez-vous à la section configuration d'un serveur Web pour exécuter Symfony ). Mais pour le développement, il est plus pratique d’utiliser le serveur Web local Symfony installé précédemment.
 
@@ -16,7 +16,7 @@ Ce serveur local prend en charge HTTP / 2, TLS / SSL, la génération automatiqu
 
 ***
 
-#Ouvrez votre terminal, accédez au nouveau répertoire de votre projet et démarrez le serveur Web local comme suit:
+# Ouvrez votre terminal, accédez au nouveau répertoire de votre projet et démarrez le serveur Web local comme suit:
 
  cd my-project/
  symfony server:start
