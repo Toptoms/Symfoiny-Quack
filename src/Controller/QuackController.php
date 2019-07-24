@@ -26,7 +26,7 @@ class QuackController extends AbstractController
     {
 
         return $this->render('quack/index.html.twig', [
-            'quacks' => $quackRepository->findBy( ['parent' => null]),
+            'quacks' => $quackRepository->findBy(['parent' => null]),
 
         ]);
 
@@ -40,21 +40,22 @@ class QuackController extends AbstractController
     {
         $quack = new Quack();
         $form = $this->createForm(QuackType::class, $quack);
+        if ($parent) {
+            $quack->setParent($parent);
+            $form->remove("pic")->remove("tags");
+        }
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $quack->setAuthor($this->getUser());
 
-            if($parent){
-                $quack->setParent($parent);
-                $form->remove("pic")->remove("tags");
-            }else{
+            if (!$parent) {
                 /** @var UploadedFile $pictureFile */
                 $pictureFile = $form['pic']->getData();
                 if ($pictureFile) {
                     $pictureFileName = $fileUploader->upload($pictureFile);
-                    $quack->setPic('/uploads/'.$pictureFileName);
+                    $quack->setPic('/uploads/' . $pictureFileName);
                 }
             }
 
@@ -118,7 +119,7 @@ class QuackController extends AbstractController
      */
     public function delete(Request $request, Quack $quack): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$quack->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $quack->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($quack);
             $entityManager->flush();

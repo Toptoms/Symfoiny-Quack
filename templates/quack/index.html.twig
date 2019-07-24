@@ -24,15 +24,28 @@
         <tbody>
         {% for quack in quacks %}
             <tr>
-                <td><a class="btn btn-primary" href="{{ path('quack_new_comment', {'parent': quack.id}) }}">comment</a>
-                </td>
+                {% if (quack.children.empty == false) %}
+                    <td>
+                        <a class="btn btn-success"
+                           href="{{ path('quack_new_comment', {'parent': quack.id}) }}">comment</a>
+                    </td>
+                {% else %}
+                    <td>
+                        <a class="btn btn-primary"
+                           href="{{ path('quack_new_comment', {'parent': quack.id}) }}">comment</a>
+                    </td>
+                {% endif %}
                 <td><img style="width: 60px" src=" {{ quack.pic }}"></td>
                 <td>{{ quack.content }}</td>
                 <td>{{ quack.tags }}</td>
                 <td>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td><img style="width: 35px" src="{{ quack.author.pic }}"> {{ quack.author.username }}</td>
                 <td>
-                    <a class="btn btn-primary" href="{{ path('quack_show', {'id': quack.id}) }}">show</a>
+                    {% if (quack.children.empty == false) %}
+                        <a class="btn btn-success" href="{{ path('quack_show', {'id': quack.id}) }}">show</a>
+                    {% else %}
+                        <a class="btn btn-primary" href="{{ path('quack_show', {'id': quack.id}) }}">show</a>
+                    {% endif %}
                     {% if is_granted('quack_edit', quack) %}
                     <a class="btn btn-primary" href="{{ path('quack_edit', {'id': quack.id}) }}">edit</a>
                 </td>

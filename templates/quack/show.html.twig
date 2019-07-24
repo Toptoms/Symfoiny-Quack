@@ -12,12 +12,11 @@
 
         <thead>
         <tr>
-
-            <th>Sharing</th>
+            <th>Author</th>
             <th>Content</th>
+            <th>Sharing</th>
             <th>tags</th>
             <th>Created_at</th>
-            <th>Author</th>
 
             {% if is_granted('ROLE_USER') %}
                 <th>actions</th>
@@ -28,16 +27,12 @@
 
 
         <tr>
-
-            <td><img style="width: 60px" src=" {{ quack.pic }}"></td>
-            <td>{{ quack.content }}</td>
-            <td>{{ quack.tags }}</td>
-
-            <td>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             <td><img style="width: 35px" src="{{ quack.author.pic }}"> {{ quack.author.username }}</td>
-
+            <td>{{ quack.content }}</td>
+            <td><img style="width: 60px" src=" {{ quack.pic }}"></td>
+            <td>{{ quack.tags }}</td>
+            <td>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             <td>
-                <a class="btn btn-primary" href="{{ path('quack_show', {'id': quack.id}) }}">show</a>
                 {% if is_granted('quack_edit', quack) %}
                 <a class="btn btn-primary" href="{{ path('quack_edit', {'id': quack.id}) }}">edit</a>
             </td>
@@ -50,7 +45,7 @@
 
 
         <thead>
-        <tr>
+        <tr class="table-primary">
             <th>Author</th>
             <th>Comment</th>
             <th>Created_at</th>
@@ -61,7 +56,8 @@
         </thead>
         <tbody>
         {% for quack in quack.children %}
-            <tr>
+            <tr class="table-warning">
+
                 <td><img style="width: 35px" src="{{ quack.author.pic }}"> {{ quack.author.username }}</td>
                 <td>{{ quack.content }}</td>
                 <td>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
