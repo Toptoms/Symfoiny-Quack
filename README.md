@@ -24,7 +24,7 @@ Ouvrez votre navigateur et accédez à http://localhost:8000/. Si tout fonctionn
 
 ***
 
-#Mettez en place la base de donnée:
+# Mettez en place la base de donnée:
 
 Adaptez le fichier d'environment .env avec le compte et le mot de passe correspondant, et le nom de la basé de donnée voulu .
 exemle: DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/db_name"
