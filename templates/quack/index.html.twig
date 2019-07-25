@@ -9,7 +9,9 @@
 
         <thead>
         <tr>
-            <th></th>
+            {% if is_granted('ROLE_USER') %}
+                <th></th>
+            {% endif %}
             <th>Sharing</th>
             <th>Content</th>
             <th>tags</th>
@@ -24,16 +26,18 @@
         <tbody>
         {% for quack in quacks %}
             <tr>
-                {% if (quack.children.empty == false) %}
-                    <td>
-                        <a class="btn btn-success"
-                           href="{{ path('quack_new_comment', {'parent': quack.id}) }}">comment</a>
-                    </td>
-                {% else %}
-                    <td>
-                        <a class="btn btn-primary"
-                           href="{{ path('quack_new_comment', {'parent': quack.id}) }}">comment</a>
-                    </td>
+                {% if is_granted('quack_edit', quack) %}
+                    {% if (quack.children.empty == false) %}
+                        <td>
+                            <a class="btn btn-success"
+                               href="{{ path('quack_new_comment', {'parent': quack.id}) }}">comment</a>
+                        </td>
+                    {% else %}
+                        <td>
+                            <a class="btn btn-primary"
+                               href="{{ path('quack_new_comment', {'parent': quack.id}) }}">comment</a>
+                        </td>
+                    {% endif %}
                 {% endif %}
                 <td><img style="width: 60px" src=" {{ quack.pic }}"></td>
                 <td>{{ quack.content }}</td>

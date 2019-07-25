@@ -7,6 +7,7 @@ use App\Entity\Quack;
 use App\Form\QuackType;
 use App\Repository\QuackRepository;
 use App\Service\FileUploader;
+use http\QueryString;
 use phpDocumentor\Reflection\Types\Parent_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -74,17 +75,6 @@ class QuackController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="quack_show", methods={"GET"})
-     */
-    public function show(Quack $quack): Response
-    {
-        //$this->denyAccessUnlessGranted('quack_show', $quack);
-
-        return $this->render('quack/show.html.twig', [
-            'quack' => $quack,
-        ]);
-    }
 
     /**
      * @Route("/{id}/edit", name="quack_edit", methods={"GET","POST"})
@@ -92,6 +82,7 @@ class QuackController extends AbstractController
      */
     public function edit(Request $request, Quack $quack, FileUploader $fileUploader): Response
     {
+        //dump($request->attributes->get("_route"));
 
         $this->denyAccessUnlessGranted('quack_edit', $quack);
 
@@ -104,17 +95,17 @@ class QuackController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            if (!$quack->getParent()){
+            if (!$quack->getParent()) {
                 /** @var UploadedFile $pictureFile */
                 $pictureFile = $form['pic']->getData();
                 if ($pictureFile) {
                     $pictureFileName = $fileUploader->upload($pictureFile);
                     $quack->setPic('/uploads/' . $pictureFileName);
-                }}
+                }
+            }
 
             $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('quack_index');
+            return $this->redirectToRoute('quack_show', ["id" => $quack->getId()]);
         }
 
         return $this->render('quack/edit.html.twig', [
@@ -136,4 +127,40 @@ class QuackController extends AbstractController
 
         return $this->redirectToRoute('quack_index');
     }
+
+    /**
+     * @param Request $request
+     * @param Quack $quack
+     * @return Response
+     * @Route("/search/result", name="quack_search", methods={"GET"})
+     */
+    public function search(Request $request,QuackRepository $quackRepository): Response
+    {
+
+        $search=$request->query->get('q');
+
+        return $this->render('quack/index.html.twig', [
+            'quacks' => $quackRepository->findBybarre($search),
+
+        ]);
+
+
+    }
+
+
+
+
+    /**
+     * @Route("/{id}", name="quack_show", methods={"GET"})
+     */
+    public function show(Quack $quack): Response
+    {
+        //$this->denyAccessUnlessGranted('quack_show', $quack);
+
+
+        return $this->render('quack/show.html.twig', [
+            'quack' => $quack,
+        ]);
+    }
 }
+
